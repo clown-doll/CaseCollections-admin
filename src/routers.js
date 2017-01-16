@@ -11,8 +11,10 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 // 组件
-//import Home from './components/Home/index.vue';
-//import ArticleDetail from './components/Articles/detail.vue';
+import Login from './components/Login/index.vue';
+import Home from './components/Home/index.vue'
+import Articles from './components/Articles/index.vue';
+import Publish from './components/Publish/index.vue';
 
 
 Vue.use(VueRouter);
@@ -21,8 +23,18 @@ Vue.use(VueRouter);
 const router = new VueRouter({
     mode: 'history',
     routes: [
-        //{ path: '/', name: '/', component: Home },
-        //{ path: '/article/:id', component: ArticleDetail }
+        { path: '/', component: Login },
+        {
+            path: '/home',
+            component: Home,
+            children: [
+                { path: 'articles', component: Articles },
+                { path: 'publish', component: Publish }
+            ]
+        }
+        /*
+        { path: '/articles', component: Articles },
+        { path: '/publish', component: Publish }*/
     ]
 });
 

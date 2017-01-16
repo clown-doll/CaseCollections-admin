@@ -30,6 +30,7 @@ Vue.http.interceptors.push(function (request, next) {
 
 import './assets/styles/bootstrap.min.css';
 import './assets/fonts/css/font-awesome.min.css';
+import './assets/styles/public.css';
 
 new Vue({
     router,
