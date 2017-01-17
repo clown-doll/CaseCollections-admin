@@ -1,3 +1,120 @@
+<template>
+	<div id="app">
+		<div class="nav-md" v-bind:class="{ 'nav-md': isMd, 'nav-sm': !isMd }">
+			<div class="container body">
+				<div class="main_container">
+					<div class="col-md-3 left_col">
+						<!-- logo -->
+						<h1 class="navbar nav_title">
+							<a href="#" class="site_title">
+								<i class="fa fa-paw"></i>
+								99知识平台
+							</a>
+						</h1>
+						<!-- /logo -->
+						<!-- info -->
+						<div class="profile clearfix">
+							<div class="profile_pic">
+								<img v-if="userInfo.avatar" class="img-circle profile_img" :src="userInfo.avatar" alt="">
+								<img v-else class="img-circle profile_img" src="../../assets/images/face-default.jpg" alt="">
+							</div>
+							<div class="profile_info">
+								<span>Welcome,</span>
+								<h2>{{userInfo.username}}</h2>
+							</div>
+						</div>
+						<!-- /info -->
+						<!-- sidebar menu -->
+						<div class="menu" id="sidebar-menu">
+							<ul class="nav side-menu">
+								<li>
+									<router-link to="/home/articles">
+										<i class="fa fa-files-o"></i>
+										文章列表
+									</router-link>
+								</li>
+								<li>
+									<router-link to="/home/publish">
+										<i class="fa fa-edit"></i>
+										发布文章
+									</router-link>
+								</li>
+								<li>
+									<a v-on:click="toggleSideNav()">
+										<i class="fa fa-sitemap"></i>
+										文章分类
+										<span class="fa fa-chevron-down"></span>
+									</a>
+									<ul class="nav child_menu" v-show="!isClose">
+										<li class="current-page">
+											<router-link to="/home/pctags">pc端分类</router-link>
+										</li>
+										<li>
+											<router-link to="/home/waptags">移动端分类</router-link>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+						<!-- /sidebar menu -->
+					</div>
+					<div class="right_col">
+						<TopNav v-bind:userInfo="userInfo" v-bind:isMd.sync="isMd" @on-change="onChange"></TopNav>
+						<div class="page-main">
+							<router-view></router-view>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</template>
+
+<script>
+	import {API_ROOT} from '../../config';
+	import TopNav from '../TopNav/index.vue';
+
+	export default {
+		data(){
+			return {
+				userApiUrl: `${API_ROOT}/user/me`,
+				userInfo: {},
+				isMd: true,
+				isClose: true
+			}
+		},
+		created: function () {
+			this.getUserInfo();
+			//console.log(this.$route.path)
+		},
+		components: {
+			TopNav
+		},
+		methods: {
+			getUserInfo: function () {
+				this.$http.get(this.userApiUrl)
+					.then(function (response) {
+						if (response.ok) {
+							this.userInfo = response.data;
+							console.log(response.data);
+						}
+					})
+					.catch(function (response) {
+						if (response.status === 401 && response.statusText === 'Unauthorized') {
+							this.$router.push({path: '/'});
+						}
+					});
+			},
+			onChange(val){
+				this.isMd = val;//④外层调用组件方注册变更方法，将组件内的数据变更，同步到组件外的数据状态中
+			},
+			toggleSideNav: function () {
+				this.isClose = !this.isClose;
+			}
+		}
+	}
+</script>
+
 <style>
 	.container {
 		width:100%;
@@ -200,7 +317,7 @@
 		display: none;
 	}
 	.nav-sm .container.body .right_col {
-		padding:10px 20px;
+		/*padding:10px 20px;*/
 		margin-left:70px;
 		z-index:2
 	}
@@ -227,82 +344,3 @@
 		}
 	}
 </style>
-<template>
-	<div id="app">
-		<div class="nav-md">
-			<div class="container body">
-				<div class="main_container">
-					<div class="col-md-3 left_col">
-						<!-- logo -->
-						<h1 class="navbar nav_title">
-							<a href="#" class="site_title">
-								<i class="fa fa-paw"></i>
-								99知识平台
-							</a>
-						</h1>
-						<!-- /logo -->
-						<!-- info -->
-						<div class="profile clearfix">
-							<div class="profile_pic">
-								<img class="img-circle profile_img" src="../../assets/images/logo.png" alt="">
-							</div>
-							<div class="profile_info">
-								<span>Welcome,</span>
-								<h2>Anthony Fernando</h2>
-							</div>
-						</div>
-						<!-- /info -->
-						<!-- sidebar menu -->
-						<div class="menu" id="sidebar-menu">
-							<ul class="nav side-menu">
-								<li>
-									<router-link to="/home/articles">
-										<i class="fa fa-files-o"></i>
-										文章列表
-									</router-link>
-								</li>
-								<li class="active">
-									<router-link to="/home/publish">
-										<i class="fa fa-edit"></i>
-										发布文章
-									</router-link>
-								</li>
-								<li>
-									<a href="javascript:;">
-										<i class="fa fa-sitemap"></i>
-										文章分类
-										<span class="fa fa-chevron-down"></span>
-									</a>
-									<ul class="nav child_menu" style="display: none">
-										<li class="current-page">
-											<router-link to="/home/foo">pc端分类</router-link>
-										</li>
-										<li>
-											<router-link to="/home/foo">移动端分类</router-link>
-										</li>
-									</ul>
-								</li>
-							</ul>
-						</div>
-						<!-- /sidebar menu -->
-					</div>
-					<div class="right_col">
-						<TopNav></TopNav>
-						<div class="page-main">
-							<router-view></router-view>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</template>
-<script>
-	import TopNav from '../TopNav/index.vue';
-
-	export default {
-		components: {
-			TopNav
-		}
-	}
-</script>

@@ -1,3 +1,62 @@
+<template>
+	<div class="login">
+		<form>
+			<h2>帐号登录</h2>
+			{{jwtToken}}
+			<div class="form-group">
+				<input type="text" name="username" v-model.trim="item.username" class="form-control" placeholder="用户名" required />
+			</div>
+			<div class="form-group">
+				<input type="password" name="password" v-model.trim="item.password" class="form-control" placeholder="密码" required />
+			</div>
+			<div class="form-group">
+				<a class="btn btn-default submit" v-on:click="doLogin()">登录</a>
+			</div>
+			<p class="info">{{info}}</p>
+			<div class="separator">
+				<h1><img src="../../assets/images/logo.png" alt="99知识平台"></h1>
+				<p>Copyright © <a href="http://f2e.tming.net.cn/" target="_blank">F2E.TMING</a>All Rights Reserved. </p>
+			</div>
+		</form>
+	</div>
+</template>
+
+<script>
+	import {ROOT} from '../../config';
+
+	export default {
+		data(){
+			return {
+				apiUrl: `${ROOT}/auth/local`,
+				info: '',
+				item: {}
+			}
+		},
+		methods: {
+			clearInfo: function () {
+				this.info = '';
+			},
+			doLogin: function () {
+				if (!this.item.username.length) return this.info = '请输入用户名';
+				if (!this.item.password.length) return this.info = '请输入密码';
+
+				this.$http.post(this.apiUrl, this.item)
+					.then(function (response) {
+						if (response.ok) {
+							localStorage.setItem('token', response.data.token);
+							this.$router.push({path: '/home'});
+						}
+					})
+					.catch(function (response) {
+						console.log(response);
+					});
+
+			}
+		}
+	}
+
+</script>
+
 <style>
 	.login{ margin: 15% auto 0; max-width: 350px; min-width: 280px;}
 	.login form{ margin-top: 20px;  position: relative;}
@@ -54,33 +113,3 @@
 	.login .separator a{ padding: 0 5px; }
 	.login .separator a:hover{ text-decoration: underline; }
 </style>
-<template>
-	<div class="login">
-		<form>
-			<h2>帐号登录</h2>
-			<div class="form-group">
-				<input type="text" class="form-control" placeholder="用户名" required />
-			</div>
-			<div class="form-group">
-				<input type="password" class="form-control" placeholder="密码" required />
-			</div>
-			<div class="form-group">
-				<a class="btn btn-default submit" v-on:click="Login()">登录</a>
-			</div>
-			<div class="separator">
-				<h1><img src="../../assets/images/logo.png" alt="99知识平台"></h1>
-				<p>Copyright © <a href="http://f2e.tming.net.cn/" target="_blank">F2E.TMING</a>All Rights Reserved. </p>
-			</div>
-		</form>
-	</div>
-</template>
-<script>
-	export default {
-		methods: {
-			Login: function () {
-				this.$router.push({path: '/home'})
-			}
-		}
-	}
-
-</script>

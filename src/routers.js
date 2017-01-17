@@ -15,6 +15,8 @@ import Login from './components/Login/index.vue';
 import Home from './components/Home/index.vue'
 import Articles from './components/Articles/index.vue';
 import Publish from './components/Publish/index.vue';
+import PcTags from './components/Tags/pc.vue';
+import WapTags from './components/Tags/wap.vue';
 
 
 Vue.use(VueRouter);
@@ -29,7 +31,9 @@ const router = new VueRouter({
             component: Home,
             children: [
                 { path: 'articles', component: Articles },
-                { path: 'publish', component: Publish }
+                { path: 'publish', component: Publish },
+                { path: 'pctags', component: PcTags },
+                { path: 'waptags', component: WapTags },
             ]
         }
         /*

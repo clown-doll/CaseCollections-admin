@@ -5,6 +5,8 @@
 * @Last Modified time: 2017-01-16 10:28:24
 */
 
-export const API_ROOT = (process.env.NODE_ENV === 'production') ? 'http://localhost:9000/admin' : 'http://localhost:9000/admin';
+export const ROOT = 'http://localhost:9000';
+
+export const API_ROOT = (process.env.NODE_ENV === 'production') ? `${ROOT}/admin` : `${ROOT}/admin`;
 
 // export const COUNT_PERPAGE = 2;
