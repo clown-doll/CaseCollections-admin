@@ -2,7 +2,7 @@
 	<div class="login">
 		<form>
 			<h2>帐号登录</h2>
-			{{jwtToken}}
+
 			<div class="form-group">
 				<input type="text" name="username" v-model.trim="item.username" class="form-control" placeholder="用户名" required />
 			</div>

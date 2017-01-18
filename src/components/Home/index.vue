@@ -28,7 +28,7 @@
 						<div class="menu" id="sidebar-menu">
 							<ul class="nav side-menu">
 								<li>
-									<router-link to="/home/articles">
+									<router-link to="/home/articles" >
 										<i class="fa fa-files-o"></i>
 										文章列表
 									</router-link>
@@ -60,9 +60,7 @@
 					</div>
 					<div class="right_col">
 						<TopNav v-bind:userInfo="userInfo" v-bind:isMd.sync="isMd" @on-change="onChange"></TopNav>
-						<div class="page-main">
-							<router-view></router-view>
-						</div>
+						<router-view></router-view>
 					</div>
 				</div>
 			</div>
@@ -96,7 +94,7 @@
 					.then(function (response) {
 						if (response.ok) {
 							this.userInfo = response.data;
-							console.log(response.data);
+							//console.log(response.data);
 						}
 					})
 					.catch(function (response) {
@@ -328,6 +326,13 @@
 		display:none
 	}
 
+
+	.page-main{ padding:10px 25px 0;}
+	.row {
+		margin: 0;
+		/* margin-right:-10px;
+		margin-left:-10px */
+	}
 
 
 	@media (max-width:991px) {

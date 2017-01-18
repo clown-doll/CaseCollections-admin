@@ -29,6 +29,7 @@ const router = new VueRouter({
         {
             path: '/home',
             component: Home,
+            redirect: '/home/articles',
             children: [
                 { path: 'articles', component: Articles },
                 { path: 'publish', component: Publish },
@@ -36,9 +37,6 @@ const router = new VueRouter({
                 { path: 'waptags', component: WapTags },
             ]
         }
-        /*
-        { path: '/articles', component: Articles },
-        { path: '/publish', component: Publish }*/
     ]
 });
 
