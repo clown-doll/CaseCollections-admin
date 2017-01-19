@@ -1,5 +1,5 @@
 <template>
-	<div class="login">
+	<div class="form-wrap">
 		<form>
 			<h2>帐号登录</h2>
 
@@ -58,25 +58,25 @@
 </script>
 
 <style>
-	.login{ margin: 15% auto 0; max-width: 350px; min-width: 280px;}
-	.login form{ margin-top: 20px;  position: relative;}
-	.login h2{ margin-bottom: 30px; font: 400 25px Helvetica,Arial,sans-serif; letter-spacing: -.05em; line-height: 20px; text-align: center;}
-	.login h2:after, .login h2:before{ content: ""; height: 1px; position: absolute; top: 10px; width: 20%; }
-	.login h2:before{ background:#7e7e7e;
+	.form-wrap{ margin: 15% auto 0; max-width: 350px; min-width: 280px;}
+	.form-wrap form{ margin-top: 20px;  position: relative;}
+	.form-wrap h2{ margin-bottom: 30px; font: 400 25px Helvetica,Arial,sans-serif; letter-spacing: -.05em; line-height: 20px; text-align: center;}
+	.form-wrap h2:after, .form-wrap h2:before{ content: ""; height: 1px; position: absolute; top: 10px; width: 20%; }
+	.form-wrap h2:before{ background:#7e7e7e;
 		background:-moz-linear-gradient(right, rgba(126, 126, 126, 1)0, rgba(255, 255, 255, 1)100%);
 		background:-webkit-linear-gradient(right, rgba(126, 126, 126, 1)0, rgba(255, 255, 255, 1)100%);
 		background:-o-linear-gradient(right, rgba(126, 126, 126, 1)0, rgba(255, 255, 255, 1)100%);
 		background:-ms-linear-gradient(right, rgba(126, 126, 126, 1)0, rgba(255, 255, 255, 1)100%);
 		background:linear-gradient(right, rgba(126, 126, 126, 1)0, rgba(255, 255, 255, 1)100%);
 		left:0;}
-	.login h2:after{ background:#7e7e7e;
+	.form-wrap h2:after{ background:#7e7e7e;
 		background:-moz-linear-gradient(left, rgba(126, 126, 126, 1)0, rgba(255, 255, 255, 1)100%);
 		background:-webkit-linear-gradient(left, rgba(126, 126, 126, 1)0, rgba(255, 255, 255, 1)100%);
 		background:-o-linear-gradient(left, rgba(126, 126, 126, 1)0, rgba(255, 255, 255, 1)100%);
 		background:-ms-linear-gradient(left, rgba(126, 126, 126, 1)0, rgba(255, 255, 255, 1)100%);
 		background:linear-gradient(left, rgba(126, 126, 126, 1)0, rgba(255, 255, 255, 1)100%);
 		right:0;}
-	.login form input[type=email], .login form input[type=password], .login form input[type=text] {
+	.form-wrap form input[type=email], .form-wrap form input[type=password], .form-wrap form input[type=text] {
 		-webkit-border-radius:3px;
 		-moz-border-radius:3px;
 		-ms-border-radius:3px;
@@ -97,7 +97,7 @@
 		margin:0 0 20px;
 		width:100%
 	}
-	.login form input[type=email]:focus, .login form input[type=password]:focus, .login form input[type=text]:focus ,.login form select:focus{
+	.form-wrap form input[type=email]:focus, .form-wrap form input[type=password]:focus, .form-wrap form input[type=text]:focus ,.form-wrap form select:focus{
 		-webkit-box-shadow:0 0 2px #AA77B4 inset;
 		-moz-box-shadow:0 0 2px #ed1c24 inset;
 		-ms-box-shadow:0 0 2px #ed1c24 inset;
@@ -107,9 +107,9 @@
 		border:1px solid #A878AF;
 		outline:0
 	}
-	.login .form-group{ text-align: center; }
-	.login .separator{ margin-top: 20px; padding-top: 10px; border-top: 1px solid #D8D8D8; text-align: center;}
-	.login .separator h1{ margin-bottom: 30px; }
-	.login .separator a{ padding: 0 5px; }
-	.login .separator a:hover{ text-decoration: underline; }
+	.form-wrap .form-group{ text-align: center; }
+	.form-wrap .separator{ margin-top: 20px; padding-top: 10px; border-top: 1px solid #D8D8D8; text-align: center;}
+	.form-wrap .separator h1{ margin-bottom: 30px; }
+	.form-wrap .separator a{ padding: 0 5px; }
+	.form-wrap .separator a:hover{ text-decoration: underline; }
 </style>

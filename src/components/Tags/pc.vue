@@ -13,7 +13,7 @@
 					<button type="button" class="btn btn-default" v-on:click="doSearch()">搜索</button>
 				</form>
 			</div>
-			<button type="button" class="btn btn-default new-btn">新建分类</button>
+			<button type="button" class="btn btn-default new-btn" v-on:click="openModifyPop()">新建分类</button>
 		</div>
 		<p v-if="!listData.count">暂无数据！</p>
 		<div class="table-responsive" v-else>
@@ -40,6 +40,7 @@
 		</div>
 		<Pages v-if="listData.count" v-bind:totalCount="totalCount"  v-on:page-change="pageListen"></Pages>
 		<PublicFooter></PublicFooter>
+		<ModifyPop v-if="showPop" v-bind:showPop="showPop"></ModifyPop>
 	</div>
 </template>
 
@@ -48,6 +49,7 @@
 
 	import PublicFooter from '../Home/footer.vue';
 	import Pages from '../Home/pages.vue';
+	import ModifyPop from './modify.vue';
 
 	export default {
 		data: function () {
@@ -56,12 +58,14 @@
 				totalCount: 0,
 				listApiUrl: `${API_ROOT}/tags/pc/types`,
 				listData: {},
-				searchKey: ''
+				searchKey: '',
+				showPop: false
 			}
 		},
 		components: {
 			PublicFooter,
-			Pages
+			Pages,
+			ModifyPop
 		},
 		created: function () {
 			this.getDefaultList();
@@ -112,6 +116,9 @@
 					.catch(function (response) {
 
 					});
+			},
+			openModifyPop: function () {
+				this.showPop = true
 			}
 		}
 	}
