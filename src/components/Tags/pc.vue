@@ -1,7 +1,7 @@
 <template>
 	<div class="page-main">
 		<div class="page-title">
-			<h3>pc端分类</h3>
+			<h3>{{showModify}}pc端分类</h3>
 		</div>
 		<div class="row action-bar">
 			<div class="col-xs-8 col-sm-9 col-md-9">
@@ -13,7 +13,7 @@
 					<button type="button" class="btn btn-default" v-on:click="doSearch()">搜索</button>
 				</form>
 			</div>
-			<button type="button" class="btn btn-default new-btn" v-on:click="openModifyPop()">新建分类</button>
+			<button type="button" class="btn btn-default new-btn" v-on:click="showPop()">新建分类</button>
 		</div>
 		<p v-if="!listData.count">暂无数据！</p>
 		<div class="table-responsive" v-else>
@@ -30,7 +30,7 @@
 						<td>{{item.name}}</td>
 						<td>{{item._id}}</td>
 						<td>
-							<a href="#">修改</a>
+							<a href="javascript:;" v-on:click="showModifyPop(item)">修改</a>
 							|
 							<a href="javascript:;" v-on:click="deleteArticle(item._id)">删除</a>
 						</td>
@@ -40,7 +40,8 @@
 		</div>
 		<Pages v-if="listData.count" v-bind:totalCount="totalCount"  v-on:page-change="pageListen"></Pages>
 		<PublicFooter></PublicFooter>
-		<ModifyPop v-if="showPop" v-bind:showPop="showPop"></ModifyPop>
+		<CreateTag v-if="show" v-bind:show.sync="show" @on-change="onChange"></CreateTag>
+		<ModifyTag v-if="showModify" v-bind:showModify.sync="showModify" v-bind:currItem.sync="currItem" @on-modify="onModify"></ModifyTag>
 	</div>
 </template>
 
@@ -49,7 +50,10 @@
 
 	import PublicFooter from '../Home/footer.vue';
 	import Pages from '../Home/pages.vue';
-	import ModifyPop from './modify.vue';
+	import CreateTag from './create.vue';
+	import ModifyTag from './modify.vue';
+
+
 
 	export default {
 		data: function () {
@@ -59,13 +63,16 @@
 				listApiUrl: `${API_ROOT}/tags/pc/types`,
 				listData: {},
 				searchKey: '',
-				showPop: false
+				show: false,
+				showModify: false,
+				currItem: {}
 			}
 		},
 		components: {
 			PublicFooter,
 			Pages,
-			ModifyPop
+			CreateTag,
+			ModifyTag
 		},
 		created: function () {
 			this.getDefaultList();
@@ -75,6 +82,7 @@
 				this.$http.get(url)
 					.then(function (response) {
 						if (response.ok) {
+							console.log(response.data);
 							this.listData = response.data;
 							this.totalCount = response.data.count;
 						}
@@ -98,7 +106,7 @@
 					var url = `${this.listApiUrl}?currentPage=${this.curr}&itemsPerPage=${COUNT_PERPAGE}&key=${keyword}`;
 					this.doGet(url);
 				} else {
-					console.log('请输入关键字');
+					this.getDefaultList();
 				}
 			},
 			deleteArticle: function (id) {
@@ -117,8 +125,18 @@
 
 					});
 			},
-			openModifyPop: function () {
-				this.showPop = true
+			showPop: function () {
+				this.show = !this.show;
+			},
+			onChange: function (val) {
+				this.show = val;
+			},
+			showModifyPop: function (item) {
+				this.currItem = item;
+				this.showModify = !this.showModify;
+			},
+			onModify: function (val) {
+				this.showModify = val;
 			}
 		}
 	}

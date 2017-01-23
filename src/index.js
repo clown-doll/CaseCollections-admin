@@ -9,11 +9,14 @@
 
 import Vue from 'vue';
 import App from './components/App.vue';
-import VueResource from 'vue-resource'
+import VueResource from 'vue-resource';
+import Vuerify from 'vuerify';
 
 import router from './routers';
 
 Vue.use(VueResource);
+Vue.use(Vuerify);
+
 
 // HTTP相关
 Vue.http.options.crossOrigin = true;

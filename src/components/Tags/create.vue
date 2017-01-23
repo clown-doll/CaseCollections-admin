@@ -4,11 +4,11 @@
 		<div class="pops-con">
 			<div class="form-wrap">
 				<form @submit.prevent="handleSubmit">
-					{{selected}}
-					{{name}}
-					<h2>修改分类</h2>
+					<h2>新建分类</h2>
 					<div class="form-group">
-						<select class="form-control"  v-model="selected">
+						<select class="form-control" v-model="selected">
+							<!--<option value="">请选择</option>
+							<option value="pc">pc</option>-->
 							<option v-for="option in typeOptions" v-bind:value="option.value">{{ option.text }}</option>
 						</select>
 					</div>
@@ -16,7 +16,7 @@
 						<input id="name"  class="form-control" type="text" v-model="name">
 					</div>
 					<div class="form-group">
-						<input class="btn btn-default" type="submit"  :disabled="invalid">
+						<input class="btn btn-default" type="submit" :disabled="invalid">
 						<a class="btn btn-default" href="javascript:;" v-on:click="cancel()">取消</a>
 					</div>
 				</form>
@@ -34,30 +34,35 @@
 	import {API_ROOT} from '../../config';
 
 	export default {
-		props: ['showModify', 'currItem'],
+		props: ['show'],
 		data: function () {
 			return {
-				selfShow: this.showModify,
+				selfShow: this.show,
+				selected: '',
 				typeOptions: [
 					{ text: '选择所属类别', value: '' },
 					{ text: 'PC端类别', value: 'pc-types' },
 					{ text: '移动端类别', value: 'wap-types' },
 					{ text: '移动端玩法', value: 'wap-ways' }
 				],
-				name: this.currItem.name,
-				apiUrl: `${API_ROOT}/tags/${this.currItem._id}`
+				name: '',
+				apiUrl: `${API_ROOT}/tags`
 			}
 		},
 		computed: {
-			selected(val){
-				console.log(val);
-				//return `${this.currItem.platform}-${this.currItem.category}`
-			},
 			errors () {
 				return this.$vuerify.$errors
 			},
 			invalid () {
 				return this.$vuerify.invalid
+			}
+		},
+		watch: {
+			show(val){
+				this.selfShow = val;
+			},
+			selfShow(val){
+				this.$emit("on-change", val);
 			}
 		},
 		vuerify: {
@@ -68,14 +73,6 @@
 			selected: {
 				test: 'required',
 				message: '请选择所属分类'
-			}
-		},
-		watch: {
-			showModify(val){
-				this.selfShow = val;
-			},
-			selfShow(val){
-				this.$emit("on-modify", val);
 			}
 		},
 		methods: {
@@ -91,7 +88,7 @@
 						name: this.name
 					};
 
-					this.$http.put(this.apiUrl, params)
+					this.$http.post(this.apiUrl, params)
 						.then(function (response) {
 							if (response.ok && response.status === 200) {
 								this.selfShow = !this.selfShow;
@@ -106,3 +103,10 @@
 		}
 	}
 </script>
+
+<style>
+	.pops{ position: fixed; left: 50%; margin-left: -175px; top: 10%; z-index: 9999;}
+	.pops .mask{ position: fixed; left: 0; top:0 ; width: 100%; height: 100%; background-color: #000; opacity: 0.8; }
+	.pops-con{ position: relative; background-color: #fff; padding:10px 45px; border-radius: 8px;}
+	.pops-con .form-wrap{ margin-top: 0; }
+</style>
