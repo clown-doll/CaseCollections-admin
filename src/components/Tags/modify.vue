@@ -45,14 +45,14 @@
 					{ text: '移动端玩法', value: 'wap-ways' }
 				],
 				name: this.currItem.name,
-				apiUrl: `${API_ROOT}/tags/${this.currItem._id}`
+				apiUrl: `${API_ROOT}/tags/${this.currItem._id}`,
+				selected: ''
 			}
 		},
+		created: function () {
+			this.selected = `${this.currItem.platform}-${this.currItem.category}`;
+		},
 		computed: {
-			selected(val){
-				console.log(val);
-				//return `${this.currItem.platform}-${this.currItem.category}`
-			},
 			errors () {
 				return this.$vuerify.$errors
 			},

@@ -1,7 +1,7 @@
 <template>
 	<div class="page-main">
 		<div class="page-title">
-			<h3>{{showModify}}pc端分类</h3>
+			<h3>pc端分类</h3>
 		</div>
 		<div class="row action-bar">
 			<div class="col-xs-8 col-sm-9 col-md-9">
