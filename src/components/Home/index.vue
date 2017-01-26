@@ -84,6 +84,7 @@
 		created: function () {
 			this.getUserInfo();
 			//console.log(this.$route.path)
+			//console.log(window.screen.width)
 		},
 		components: {
 			TopNav
