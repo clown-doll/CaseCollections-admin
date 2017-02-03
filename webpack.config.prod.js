@@ -70,6 +70,9 @@ module.exports = {
     },
     resolve: {
         root: path.resolve(__dirname, 'node_modules'),
-        extensions: ['','.js','.vue','.scss']
+        extensions: ['','.js','.vue','.scss'],
+        alias: {
+            vue: 'vue/dist/vue.js'
+        }
     }
 };
