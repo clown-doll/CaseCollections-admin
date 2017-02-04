@@ -3,9 +3,10 @@
 		<div class="page-title publish-page-title">
 			<h3>发布文章</h3>
 		</div>
-		<form>
+		<ul><li v-for="err in errors" v-text="err"></li></ul>
+		<form @submit.prevent="handleSubmit">
 			<div class="form-group">
-				<label>文章分类</label>
+				<label><span class="text-danger">*</span>文章分类</label>
 				<div class="kind-group">
 					<template v-if="wapTypes.count">
 						<div class="checkbox">
@@ -25,7 +26,7 @@
 						</div>
 						<div class="kind-sub-menu" v-show="wapWaysShow">
 							<div class="checkbox kind-ti"  v-for="item in wapWays.data">
-								<label><input :value="item._id" type="checkbox" v-model="wapWaysChk">{{item.name}}</label>
+								<label for="item._id"><input :id="item._id" :value="item._id" type="checkbox" v-model="wapWaysChk">{{item.name}}</label>
 							</div>
 						</div>
 					</template>
@@ -42,21 +43,23 @@
 					</template>
 
 				</div>
+				<input type="hidden" v-model="resultKind">
 			</div>
 			<div class="form-group">
-				<label>文章标题</label>
+				<label><span class="text-danger">*</span> 文章标题</label>
 				<input class="form-control" type="text" v-model="caseTitle">
 			</div>
 			<div class="form-group">
-				<label>案例地址</label>
+				<label><span class="text-danger">*</span>案例地址</label>
 				<input class="form-control" type="text" v-model="caseUrl">
 			</div>
 			<div class="form-group">
-				<label>文章内容</label>
+				<label><span class="text-danger">*</span>文章内容</label>
 				<VueEditor
 					:use-save-button="false"
 					@editor-updated="handleUpdatedContent">
 				</VueEditor>
+				<input type="hidden" v-model="content">
 			</div>
 			<div class="form-group">
 				<label>图片上传（第一张为封面图片，其余为页面预览图）</label>
@@ -83,9 +86,9 @@
 						<td>
 							{{onStatus(file)}}
 						</td>
-						<td>
+						<!--<td>
 							<button type="button" @click="uploadItem(file)">上传</button>
-						</td>
+						</td>-->
 					</tr>
 					<tr>
 						<td><button type="button" @click="uploadAll()">上传</button></td>
@@ -95,8 +98,7 @@
 			</div>
 
 			<p align="center">
-				<button type="button" name="save-content"
-					@click="saveTheContent">
+				<button type="submit" name="save-content">
 					发布
 				</button>
 			</p>
@@ -112,9 +114,9 @@
 	export default {
 		data: function () {
 			return {
-                wapTypesChk: '',
-                wapWaysChk: '',
-                pcTypesChk: '',
+                wapTypesChk: [],
+                wapWaysChk: [],
+                pcTypesChk: [],
 				pcTypes: {},
                 wapTypes: {},
                 wapWays: {},
@@ -142,8 +144,8 @@
                 //回调函数绑定
                 cbEvents:{
                     onCompleteUpload:(file,response,status,header)=>{
-                        console.log(file);
-                        console.log(response);
+                        //console.log(file);
+                        //console.log(response);
                         this.images.push(response.images);
                         console.log("finish upload;")
                     }
@@ -172,9 +174,42 @@
                 this.wapWays = value;
             });
         },
+        computed: {
+            errors () {
+                return this.$vuerify.$errors
+            },
+			content () {
+                return this.htmlFromEditor
+			},
+            resultKind () {
+                return [...this.pcTypesChk, ...this.wapTypesChk, ...this.wapWaysChk]
+			}
+        },
         components:{
             VueFileUpload,
             VueEditor
+        },
+        vuerify: {
+            resultKind: {
+                test (val) {
+                    return this.pcTypesChk.length || this.wapTypesChk.length || this.wapWaysChk.length;
+                },
+                message: '请选择分类'
+            },
+		    caseTitle: {
+                test: 'required',
+                message: '请输入标题'
+            },
+            caseUrl: {
+                test: 'required',
+                message: '请输入案例地址'
+            },
+            content: {
+                test (val) {
+                    return this.htmlFromEditor;
+                },
+                message: '请输入内容'
+            }
         },
         methods:{
             onStatus(file){
@@ -203,32 +238,30 @@
             handleUpdatedContent: function (value) {
                 this.htmlFromEditor = value
             },
-            saveTheContent: function () {
-				var caseImages = this.images;
-				console.log(this.images);
+            handleSubmit: function () {
+                if (this.$vuerify.check()) {
+                    var caseImages = this.images;
 
-                var params = {
-                    title: this.caseTitle,
-                    content: this.htmlFromEditor,
-                    case_url: this.caseUrl,
-                    tags: '',
-                    cover: this.images.shift(),
-                    preview: this.images
-                };
+                    var params = {
+                        title: this.caseTitle,
+                        content: this.content,
+                        case_url: this.caseUrl,
+                        tags: this.resultKind,
+                        cover: this.images.shift(),
+                        preview: this.images
+                    };
 
-                console.log(params);
-
-                /*this.$http.post(`${API_ROOT}/articles`, params)
-                    .then(function (response) {
-                        if (response.ok && response.status === 200) {
-                            //this.selfShow = !this.selfShow;
-                            //this.$parent.getDefaultList();
-                        }
-                    })
-                    .catch(function (response) {
-                        //console.log(response);
-                    });*/
-
+                    this.$http.post(`${API_ROOT}/articles`, params)
+                        .then(function (response) {
+                            if (response.ok && response.status === 200) {
+                                console.log(response.data);
+                                this.$router.push({path: '/home'});
+                            }
+                        })
+                        .catch(function (response) {
+                            //console.log(response);
+                        });
+                }
             },
             toggleKindGroup: function (c) {
 				switch (c) {
@@ -253,7 +286,6 @@
                     .catch(function (response) {
 
                     });
-				//console.log(test);
 				return p;
             }
         }

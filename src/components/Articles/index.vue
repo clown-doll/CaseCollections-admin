@@ -90,7 +90,7 @@
 					var url = `${this.listApiUrl}?currentPage=${this.curr}&itemsPerPage=${COUNT_PERPAGE}&key=${keyword}`;
 					this.doGet(url);
 				} else {
-					console.log('请输入关键字');
+                    this.getDefaultList();
 				}
 			},
 			pageListen: function (page) {
