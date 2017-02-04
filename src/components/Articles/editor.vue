@@ -63,7 +63,7 @@
 				<div class="form-group">
 					<label><span class="text-danger">*</span>文章内容</label>
 					<VueEditor
-						:editor-content="htmlFroEditor"
+						:editor-content="htmlForEditor"
 						:use-save-button="false"
 						@editor-updated="handleUpdatedContent">
 					</VueEditor>
@@ -79,7 +79,6 @@
 						v-bind:events = 'cbEvents'
 						v-bind:request-options = "reqopts"
 						v-on:onAdd = "onAddItem"></VueFileUpload>
-
 					<table class="table table-striped">
 						<tr v-for='file in files'>
 							<td>
@@ -102,7 +101,6 @@
 							<td><button type="button" @click="uploadAll()">上传</button></td>
 						</tr>
 					</table>
-
 				</div>-->
 
 				<p align="center">
@@ -118,14 +116,13 @@
     import {API_ROOT} from '../../config';
     import VueFileUpload from 'vue-file-upload';
     import { VueEditor } from 'vue2-editor';
-
     export default {
         data () {
             return {
                 loading: false,
                 post: null,
                 error: null,
-				articleApiUrl: `${API_ROOT}/articles/${this.$route.params.aid}`,
+                articleApiUrl: `${API_ROOT}/articles/${this.$route.params.aid}`,
                 wapTypesChk: [],
                 wapWaysChk: [],
                 pcTypesChk: [],
@@ -140,7 +137,7 @@
                 pcTypesApiUrl: `${API_ROOT}/tags/pc/types`,
                 caseTitle: '',
                 caseUrl: '',
-                htmlFroEditor: null,
+                htmlForEditor: null,
                 apiUrl: `${API_ROOT}/upload`,
                 images: [],
                 files:[],
@@ -187,19 +184,17 @@
             wapWaysPromise.then(function (value){
                 this.wapWays = value;
             });
-
             this.fetchData();
-
         },
         computed: {
             errors () {
-                return this.$vuerify.$errors
+                return this.$vuerify.$errors;
             },
             content () {
-                return this.htmlFroEditor
+                return this.htmlForEditor;
             },
             resultKind () {
-                return [...this.pcTypesChk, ...this.wapTypesChk, ...this.wapWaysChk]
+                return [...this.pcTypesChk, ...this.wapTypesChk, ...this.wapWaysChk];
             }
         },
         watch: {
@@ -227,7 +222,7 @@
             },
             content: {
                 test (val) {
-                    return this.htmlFroEditor;
+                    return this.htmlForEditor;
                 },
                 message: '请输入内容'
             }
@@ -242,10 +237,8 @@
                         this.loading = false;
                         if (response.ok) {
                             this.post = response.data;
-
                             for (var v of this.post.data.tags) {
                                 var chkName = `${v.platform}${v.category.substring(0,1).toUpperCase()+v.category.substring(1)}Chk`;
-
                                 switch (chkName) {
                                     case 'wapTypesChk':
                                         this.wapTypesChk.push(v._id);
@@ -257,20 +250,16 @@
                                         this.pcTypesChk.push(v._id);
                                         break;
                                 }
-
                             }
                             this.caseTitle = this.post.data.title;
                             this.caseUrl = this.post.data.case_url;
-                            this.htmlFroEditor = this.post.data.content;
-
-                            console.log(this.htmlFroEditor);
-
+                            this.content = this.post.data.content;
+                            console.log(this.htmlForEditor);
+                            console.log(this.content);
                         }
                     })
                     .catch(function (response) {
-
                     });
-
             },
             toggleKindGroup: function (c) {
                 switch (c) {
@@ -293,17 +282,15 @@
                         }
                     })
                     .catch(function (response) {
-
                     });
                 return p;
             },
             handleUpdatedContent: function (value) {
-                this.htmlFroEditor = value
+                this.htmlForEditor = value
             },
             handleSubmit: function () {
                 if (this.$vuerify.check()) {
                     //var caseImages = this.images;
-
                     var params = {
                         title: this.caseTitle,
                         content: this.content,
@@ -312,9 +299,7 @@
                         //cover: this.images.shift(),
                         //preview: this.images
                     };
-
                     console.log(params);
-
                     this.$http.put(this.articleApiUrl, params)
                         .then(function (response) {
                             if (response.ok && response.status === 200) {
@@ -328,5 +313,5 @@
                 }
             }
         }
-	}
+    }
 </script>
