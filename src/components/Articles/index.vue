@@ -29,7 +29,7 @@
 						<td>{{item.title}}</td>
 						<td>{{item.publish_time}}</td>
 						<td>
-							<a href="#">修改</a>
+							<router-link :to="{ name: 'articles', params: { aid: item._id }}">修改</router-link>
 							|
 							<a href="javascript:;" v-on:click="deleteArticle(item._id)">删除</a>
 						</td>
@@ -125,6 +125,10 @@
 	.custom-table thead{
 		background:rgba(52, 73, 94, .94);
 		color:#ECF0F1
+	}
+
+	.custom-table td a:hover{
+		text-decoration: underline;
 	}
 
 	.action-bar{ position: relative; padding: 15px 0; }

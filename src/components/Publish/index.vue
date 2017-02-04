@@ -109,7 +109,7 @@
 <script>
 	import {API_ROOT} from '../../config';
     import VueFileUpload from 'vue-file-upload';
-    import { VueEditor } from 'vue2-editor'
+    import { VueEditor } from 'vue2-editor';
 
 	export default {
 		data: function () {

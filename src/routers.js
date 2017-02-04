@@ -14,6 +14,7 @@ import VueRouter from 'vue-router';
 import Login from './components/Login/index.vue';
 import Home from './components/Home/index.vue'
 import Articles from './components/Articles/index.vue';
+import EditArticle from './components/Articles/editor.vue';
 import Publish from './components/Publish/index.vue';
 import PcTags from './components/Tags/pc.vue';
 import WapTags from './components/Tags/wap.vue';
@@ -34,6 +35,7 @@ const router = new VueRouter({
             redirect: '/home/articles',
             children: [
                 { path: 'articles', component: Articles },
+                { path: 'articles/:aid', name: 'articles', component: EditArticle },
                 { path: 'publish', component: Publish },
                 { path: 'pctags', component: PcTags },
                 { path: 'waptags', component: WapTags,
