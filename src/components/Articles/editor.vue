@@ -253,9 +253,7 @@
                             }
                             this.caseTitle = this.post.data.title;
                             this.caseUrl = this.post.data.case_url;
-                            this.content = this.post.data.content;
-                            console.log(this.htmlForEditor);
-                            console.log(this.content);
+                            this.htmlForEditor = this.post.data.content;
                         }
                     })
                     .catch(function (response) {

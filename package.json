@@ -62,7 +62,7 @@
     "express": "^4.14.0",
     "serve-favicon": "^2.3.2",
     "vue-file-upload": "^0.1.1",
-    "vue2-editor": "^1.0.99",
+    "vue2-editor": "^1.1.0",
     "vuerify": "^0.3.5"
   }
 }
