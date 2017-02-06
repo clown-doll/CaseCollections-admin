@@ -10,7 +10,7 @@
 						<label for="" class="sr-only">标题/关键词</label>
 						<input type="text" class="form-control" placeholder="标题/关键词" v-model.trim="searchKey">
 					</div>
-					<button type="button" class="btn btn-default" v-on:click="doSearch()">搜索</button>
+					<button type="button" class="btn btn-default" @click="doSearch()">搜索</button>
 				</form>
 			</div>
 		</div>
@@ -27,11 +27,11 @@
 				<tbody>
 					<tr v-for="item in listData.data">
 						<td>{{item.title}}</td>
-						<td>{{item.publish_time}}</td>
+						<td>{{item.publish_time | moment("YYYY-MM-DD")}}</td>
 						<td>
 							<router-link :to="{ name: 'articles', params: { aid: item._id }}">修改</router-link>
 							|
-							<a href="javascript:;" v-on:click="deleteArticle(item._id)">删除</a>
+							<button @click="deleteArticle(item._id)">删除</button>
 						</td>
 					</tr>
 				</tbody>
@@ -127,7 +127,11 @@
 		color:#ECF0F1
 	}
 
-	.custom-table td a:hover{
+	.custom-table td button{
+		background: none;
+		border: 0;
+	}
+	.custom-table td button:hover{
 		text-decoration: underline;
 	}
 

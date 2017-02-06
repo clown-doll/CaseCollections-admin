@@ -9,7 +9,7 @@
 						<select class="form-control" v-model="selected">
 							<!--<option value="">请选择</option>
 							<option value="pc">pc</option>-->
-							<option v-for="option in typeOptions" v-bind:value="option.value">{{ option.text }}</option>
+							<option v-for="option in typeOptions" :value="option.value">{{ option.text }}</option>
 						</select>
 					</div>
 					<div class="form-group">
@@ -17,7 +17,7 @@
 					</div>
 					<div class="form-group">
 						<input class="btn btn-default" type="submit" :disabled="invalid">
-						<a class="btn btn-default" href="javascript:;" v-on:click="cancel()">取消</a>
+						<button class="btn btn-default" @click="cancel()">取消</button>
 					</div>
 				</form>
 				<ul><li v-for="err in errors" v-text="err"></li></ul>

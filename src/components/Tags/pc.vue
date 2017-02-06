@@ -10,10 +10,10 @@
 						<label for="" class="sr-only">分类名称</label>
 						<input type="text" class="form-control" id="" placeholder="标题/关键词" v-model.trim="searchKey">
 					</div>
-					<button type="button" class="btn btn-default" v-on:click="doSearch()">搜索</button>
+					<button type="button" class="btn btn-default" @click="doSearch()">搜索</button>
 				</form>
 			</div>
-			<button type="button" class="btn btn-default new-btn" v-on:click="showPop()">新建分类</button>
+			<button type="button" class="btn btn-default new-btn" @click="showPop()">新建分类</button>
 		</div>
 		<p v-if="!listData.count">暂无数据！</p>
 		<div class="table-responsive" v-else>
@@ -25,14 +25,14 @@
 						<th>操作</th>
 					</tr>
 				</thead>
-				<tbody v-for="item in listData.data">
-					<tr>
+				<tbody>
+					<tr v-for="item in listData.data">
 						<td>{{item.name}}</td>
 						<td>{{item._id}}</td>
 						<td>
-							<a href="javascript:;" v-on:click="showModifyPop(item)">修改</a>
+							<button @click="showModifyPop(item)">修改</button>
 							|
-							<a href="javascript:;" v-on:click="deleteArticle(item._id)">删除</a>
+							<button @click="deleteArticle(item._id)">删除</button>
 						</td>
 					</tr>
 				</tbody>

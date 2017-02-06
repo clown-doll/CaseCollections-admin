@@ -11,11 +11,13 @@ import Vue from 'vue';
 import App from './components/App.vue';
 import VueResource from 'vue-resource';
 import Vuerify from 'vuerify';
+import VueMoment from 'vue-moment';
 
 import router from './routers';
 
 Vue.use(VueResource);
 Vue.use(Vuerify);
+Vue.use(VueMoment);
 
 
 // HTTP相关

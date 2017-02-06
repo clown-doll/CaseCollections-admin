@@ -41,8 +41,8 @@ const router = new VueRouter({
                 { path: 'waptags', component: WapTags,
                     redirect: '/home/waptags/types',
                     children: [
-                        { path: 'types', component: WapTypes },
-                        { path: 'ways', component: WapWays }
+                        { path: 'types', name: 'wapTypes', component: WapTypes },
+                        { path: 'ways', name: 'wapWays', component: WapWays }
                     ]
                 }
             ]

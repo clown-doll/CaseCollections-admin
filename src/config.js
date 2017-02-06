@@ -9,4 +9,4 @@ export const ROOT = 'http://localhost:9000';
 
 export const API_ROOT = (process.env.NODE_ENV === 'production') ? `${ROOT}/admin` : `${ROOT}/admin`;
 
-export const COUNT_PERPAGE = 10;
+export const COUNT_PERPAGE = 2;

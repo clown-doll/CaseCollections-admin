@@ -8,17 +8,14 @@
 				<form class="form-inline" role="form">
 					<div class="form-group">
 						<label for="" class="sr-only">分类名称/id</label>
-						<input type="text" class="form-control" id="" placeholder="标题/关键词">
+						<input type="text" class="form-control" placeholder="标题/关键词" v-model.trim="propToSend">
 					</div>
-					<button type="submit" class="btn btn-default">搜索</button>
+					<button type="button" class="btn btn-default" @click="doSearch()">搜索</button>
 				</form>
 			</div>
-			<button type="button" class="btn btn-default new-btn">新建分类</button>
+			<button type="button" class="btn btn-default new-btn" @click="showPop()">新建分类</button>
 		</div>
 		<ul class="nav nav-tabs bar-tabs">
-			<!--<li v-for="(tab, index) in tabs" :class="{active:active===index}" @click="toggle(index, tab.view)">
-				<a href="javascript:;">{{tab.name}}</a>
-			</li>-->
 			<li>
 				<router-link to="/home/waptags/types">类别</router-link>
 			</li>
@@ -26,9 +23,9 @@
 				<router-link to="/home/waptags/ways">玩法</router-link>
 			</li>
 		</ul>
-		<router-view></router-view>
-		<Pages></Pages>
+		<router-view :propData="propToSend"></router-view>
 		<PublicFooter></PublicFooter>
+		<CreateTag v-if="show" :show.sync="show" @on-change="onChange"></CreateTag>
 	</div>
 </template>
 
@@ -37,35 +34,29 @@
 
 	import PublicFooter from '../Home/footer.vue';
 	import Pages from '../Home/pages.vue';
+    import CreateTag from './create.vue';
 
 
 
 	export default {
 		data: function () {
 			return {
-				/*currentView: 'types',
-				active: 0,
-				tabs: [
-					{
-						name: '类别',
-						view: 'types'
-					},
-					{
-						name: '玩法',
-						view: 'ways'
-					}
-				]*/
+                show: false,
+				propToSend: null
 			}
 		},
 		components: {
 			PublicFooter,
-			Pages
+			Pages,
+            CreateTag
 		},
 		methods: {
-			/*toggle(i, v){
-				this.active = i;
-				this.currentView = v;
-			}*/
+            showPop: function () {
+                this.show = !this.show;
+            },
+            onChange: function (val) {
+                this.show = val;
+            }
 		}
 	}
 </script>
