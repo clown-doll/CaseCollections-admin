@@ -1,7 +1,6 @@
 <template>
 	<div>
 		<div class="table-responsive">
-			{{propData}}
 			<p v-if="!listData.count">暂无数据！</p>
 			<table class="table table-striped custom-table" v-else>
 				<thead>
@@ -37,11 +36,6 @@
 
 
 	export default {
-        props: {
-            propData: {
-                type: String
-            }
-        },
 		data: function () {
 			return {
                 curr: 1,

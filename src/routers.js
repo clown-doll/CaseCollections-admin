@@ -18,8 +18,8 @@ import EditArticle from './components/Articles/editor.vue';
 import Publish from './components/Publish/index.vue';
 import PcTags from './components/Tags/pc.vue';
 import WapTags from './components/Tags/wap.vue';
-import WapTypes from './components/Tags/wapTypes.vue';
-import WapWays from './components/Tags/wapWays.vue';
+//import WapTypes from './components/Tags/wapTypes.vue';
+//import WapWays from './components/Tags/wapWays.vue';
 
 
 Vue.use(VueRouter);
@@ -38,13 +38,7 @@ const router = new VueRouter({
                 { path: 'articles/:aid', name: 'articles', component: EditArticle },
                 { path: 'publish', component: Publish },
                 { path: 'pctags', component: PcTags },
-                { path: 'waptags', component: WapTags,
-                    redirect: '/home/waptags/types',
-                    children: [
-                        { path: 'types', name: 'wapTypes', component: WapTypes },
-                        { path: 'ways', name: 'wapWays', component: WapWays }
-                    ]
-                }
+                { path: 'waptags', component: WapTags }
             ]
         }
     ]

@@ -8,7 +8,7 @@
 				<form class="form-inline" role="form">
 					<div class="form-group">
 						<label for="" class="sr-only">分类名称/id</label>
-						<input type="text" class="form-control" placeholder="标题/关键词" v-model.trim="propToSend">
+						<input type="text" class="form-control" placeholder="标题/关键词" v-model.trim="searchKey">
 					</div>
 					<button type="button" class="btn btn-default" @click="doSearch()">搜索</button>
 				</form>
@@ -16,14 +16,16 @@
 			<button type="button" class="btn btn-default new-btn" @click="showPop()">新建分类</button>
 		</div>
 		<ul class="nav nav-tabs bar-tabs">
-			<li>
-				<router-link to="/home/waptags/types">类别</router-link>
+			<li :class="{ active: belongto === 'WapTypes' }">
+				<button @click="toggleCon('WapTypes')">类别</button>
 			</li>
-			<li>
-				<router-link to="/home/waptags/ways">玩法</router-link>
+			<li :class="{ active: belongto === 'WapWays' }">
+				<button @click="toggleCon('WapWays')">玩法</button>
 			</li>
 		</ul>
-		<router-view :propData="propToSend"></router-view>
+
+		<component v-bind:is="belongto"></component>
+
 		<PublicFooter></PublicFooter>
 		<CreateTag v-if="show" :show.sync="show" @on-change="onChange"></CreateTag>
 	</div>
@@ -36,19 +38,25 @@
 	import Pages from '../Home/pages.vue';
     import CreateTag from './create.vue';
 
+    import WapTypes from './wapTypes.vue';
+    import WapWays from './wapWays.vue';
+
 
 
 	export default {
 		data: function () {
 			return {
                 show: false,
-				propToSend: null
+                searchKey: null,
+				belongto: 'WapTypes'
 			}
 		},
 		components: {
 			PublicFooter,
 			Pages,
-            CreateTag
+            CreateTag,
+            WapTypes,
+            WapWays
 		},
 		methods: {
             showPop: function () {
@@ -56,6 +64,24 @@
             },
             onChange: function (val) {
                 this.show = val;
+            },
+            toggleCon: function (val) {
+				this.belongto = val;
+				this.searchKey = '';
+            },
+            doSearch: function () {
+				for (var i of this.$children) {
+				    console.log(i.listApiUrl);
+				    if (i.listApiUrl) {
+                        if (this.searchKey) {
+                            var keyword = this.searchKey;
+                            var url = `${i.listApiUrl}?currentPage=${i.curr}&itemsPerPage=${COUNT_PERPAGE}&key=${keyword}`;
+                            i.doGet(url);
+                        } else {
+                            i.getDefaultList();
+                        }
+					}
+				}
             }
 		}
 	}
@@ -87,15 +113,16 @@
 		border-top:0;
 		margin-top:-15px
 	}
-	ul.bar-tabs>li.active a {
+	ul.bar-tabs>li.active button {
 		background:#fff;
-		border-color:transparent
+		border-color:transparent;
 	}
-	ul.bar-tabs>li a {
+	ul.bar-tabs>li button {
 		padding:10px 17px;
 		background:#F5F7FA;
 		margin:0;
-		border-radius:0
+		border-radius:0;
+		border: none
 	}
 	ul.bar-tabs.right {
 		padding-right:14px
