@@ -18,7 +18,7 @@
 						<template v-if="wapTypes.count">
 							<div class="checkbox">
 								移动端类别
-								<a class="collapse-link" v-on:click="toggleKindGroup('wap-types')"><i class="fa fa-chevron-down"></i></a>
+								<a class="collapse-link" @click="toggleKindGroup('wap-types')"><i class="fa fa-chevron-down"></i></a>
 							</div>
 							<div class="kind-sub-menu" v-show="wapTypesShow">
 								<div class="checkbox kind-ti" v-for="item in wapTypes.data">
@@ -29,18 +29,18 @@
 						<template v-if="wapWays.count">
 							<div class="checkbox">
 								移动端玩法
-								<a class="collapse-link" v-on:click="toggleKindGroup('wap-ways')"><i class="fa fa-chevron-down"></i></a>
+								<a class="collapse-link" @click="toggleKindGroup('wap-ways')"><i class="fa fa-chevron-down"></i></a>
 							</div>
 							<div class="kind-sub-menu" v-show="wapWaysShow">
 								<div class="checkbox kind-ti"  v-for="item in wapWays.data">
-									<label for="item._id"><input :id="item._id" :value="item._id" type="checkbox" v-model="wapWaysChk">{{item.name}}</label>
+									<label :for="item._id"><input :id="item._id" :value="item._id" type="checkbox" v-model="wapWaysChk">{{item.name}}</label>
 								</div>
 							</div>
 						</template>
 						<template v-if="pcTypes.count">
 							<div class="checkbox">
 								PC端类别
-								<a class="collapse-link" v-on:click="toggleKindGroup('pc-types')"><i class="fa fa-chevron-down"></i></a>
+								<a class="collapse-link" @click="toggleKindGroup('pc-types')"><i class="fa fa-chevron-down"></i></a>
 							</div>
 							<div class="kind-sub-menu" v-show="pcTypesShow">
 								<div class="checkbox kind-ti"  v-for="item in pcTypes.data">
@@ -68,6 +68,10 @@
 						@editor-updated="handleUpdatedContent">
 					</VueEditor>
 					<input type="hidden" v-model="content">
+				</div>
+				{{images}}
+				<div v-for="s in images">
+					<img :src="s" alt="">
 				</div>
 				<!--<div class="form-group">
 					<label>图片上传（第一张为封面图片，其余为页面预览图）</label>
@@ -237,6 +241,7 @@
                         this.loading = false;
                         if (response.ok) {
                             this.post = response.data;
+                            console.log(this.post);
                             for (var v of this.post.data.tags) {
                                 var chkName = `${v.platform}${v.category.substring(0,1).toUpperCase()+v.category.substring(1)}Chk`;
                                 switch (chkName) {
@@ -254,6 +259,14 @@
                             this.caseTitle = this.post.data.title;
                             this.caseUrl = this.post.data.case_url;
                             this.htmlForEditor = this.post.data.content;
+
+                            console.log(this.post.data.cover);
+                            console.log(this.post.data.preview);
+
+                            if (this.post.data.cover) {
+                                this.images = this.post.data.preview.split(',').concat(this.post.data.cover);
+							}
+
                         }
                     })
                     .catch(function (response) {
