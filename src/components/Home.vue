@@ -64,6 +64,8 @@
                     if (response.status === 200) {
                         this.userInfo = response.data
                     }
+                }).catch((err) => {
+                    alert(err.response.data.msg)
                 })
             },
             toggleExitBtn () {

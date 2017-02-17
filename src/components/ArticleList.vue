@@ -83,6 +83,8 @@
                         this.listData = response.data.data
                         this.count = response.data.count
                     }
+                }).catch((err) => {
+                    console.log(err)
                 })
             },
             getCurr (data) {

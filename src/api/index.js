@@ -1,16 +1,9 @@
 import axios from 'axios'
 import {DOMAIN} from '../../config/global.config'
 
-const defaults = {
-    baseURL: (process.env.NODE_ENV === 'production') ? `${DOMAIN}/admin` : `${DOMAIN}/admin`,
-    headers: {
-        common: {
-            Authorization: localStorage.getItem('token') ? `Bearer ${localStorage.getItem('token')}` : ''
-        }
-    }
-}
-
-Object.assign(axios.defaults, defaults)
+axios.defaults.timeout = 5000
+axios.defaults.baseURL = `${DOMAIN}/admin`
+axios.defaults.headers.common['Authorization'] = localStorage.getItem('token') ? `Bearer ${localStorage.getItem('token')}` : ''
 
 export const login = (conditions) => {
     return axios.post(`${DOMAIN}/auth/local`, conditions)

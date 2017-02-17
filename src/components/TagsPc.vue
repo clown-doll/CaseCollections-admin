@@ -91,9 +91,7 @@
                 },
                 typeOptions: [
                     { text: '选择所属类别', value: '' },
-                    { text: 'PC端类别', value: 'pc-types' },
-                    { text: '移动端类别', value: 'wap-types' },
-                    { text: '移动端玩法', value: 'wap-ways' }
+                    { text: '类别', value: 'pc-types' }
                 ]
             }
         },
@@ -144,6 +142,8 @@
                         this.listData = response.data.data
                         this.count = response.data.count
                     }
+                }).catch((err) => {
+                    console.log(err)
                 })
             },
             getCurr (data) {
@@ -182,8 +182,8 @@
                     if (response.status === 200 && response.data.success) {
                         this.getList(this.platform, this.category, this.conditions)
                     }
-                }).catch((response) => {
-                    console.log(response)
+                }).catch((err) => {
+                    console.log(err)
                 })
             },
             doCreate () {
@@ -198,8 +198,8 @@
                     if (response.status === 200 && response.data.success) {
                         this.getList(this.platform, this.category, this.conditions)
                     }
-                }).catch((response) => {
-                    console.log(response)
+                }).catch((err) => {
+                    alert(err.response.data.msg)
                 })
             },
             doDelete (id) {
@@ -208,8 +208,8 @@
                         alert('删除成功')
                         this.getList(this.platform, this.category, this.conditions)
                     }
-                }).catch((response) => {
-                    console.log(response)
+                }).catch((err) => {
+                    console.log(err)
                 })
             }
         }
