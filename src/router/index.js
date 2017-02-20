@@ -5,6 +5,7 @@ import Login from 'components/Login'
 import Err from 'components/Err'
 import Home from 'components/Home'
 import Articles from 'components/ArticleList'
+import EditArticle from 'components/EditArticle'
 import Publish from 'components/Publish'
 import TagsPc from 'components/TagsPc'
 import TagsWap from 'components/TagsWap'
@@ -33,6 +34,11 @@ export default new Router({
                     path: 'articles',
                     name: 'articles',
                     component: Articles
+                },
+                {
+                    path: 'articles/:aid',
+                    name: 'edit',
+                    component: EditArticle
                 },
                 {
                     path: 'publish',

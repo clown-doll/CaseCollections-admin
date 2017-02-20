@@ -1,7 +1,7 @@
 <template>
 	<div class="page-main" ref="publish">
 		<div class="page-title publish-page-title">
-			<h3>发布文章</h3>
+			<h3>修改文章</h3>
 		</div>
 		<form>
 			<div class="form-group">
@@ -80,16 +80,22 @@
 			<div class="form-group">
 				<label>封面图<span class="upload-tips">（允许上传.jpg, .png, .gif格式的图片）</span></label>
 				<div class="img-file-wrap">
+					<ul class="detail-img-list" v-if="article.cover[0]">
+						<li v-for="(item, index) in article.cover">
+							<img :src="item" alt="">
+							<a href="javascript:;" @click="deleteImg('cover', index)" class="close">&times;</a>
+						</li>
+					</ul>
 					<table class="img-list-table">
 						<tr v-for="(file, index) in coverFiles">
-							<td>
+							<!--<td>
 								<input type="text" readonly :value="file.name"  class="form-control">
-							</td>
+							</td>-->
 							<td v-if="file.success">
-								<span class="text-success">上传成功</span>
+								<span class="text-success">{{file.name}} - 上传成功</span>
 							</td>
 							<td v-if="file.error">
-								<span class="text-danger">上传失败</span>
+								<span class="text-danger">{{file.name}} - 上传失败</span>
 							</td>
 							<td><input type="hidden" id="cover" :value="file.response.images"></td>
 						</tr>
@@ -110,16 +116,22 @@
 			<div class="form-group">
 				<label>页面预览图<span class="upload-tips">（允许上传.jpg, .png, .gif格式的图片）</span></label>
 				<div class="img-file-wrap">
+					<ul class="detail-img-list" v-if="article.preview[0]">
+						<li v-for="(item, index) in article.preview">
+							<img :src="item" alt="">
+							<a href="javascript:;" @click="deleteImg('preview', index)" class="close">&times;</a>
+						</li>
+					</ul>
 					<table class="img-list-table">
 						<tr v-for="(file, index) in previewFiles">
-							<td>
+							<!--<td>
 								<input type="text" readonly :value="file.name"  class="form-control">
-							</td>
+							</td>-->
 							<td v-if="file.success">
-								<span class="text-success">上传成功</span>
+								<span class="text-success">{{file.name}} - 上传成功</span>
 							</td>
 							<td v-if="file.error">
-								<span class="text-danger">上传失败</span>
+								<span class="text-danger">{{file.name}} - 上传失败</span>
 							</td>
 							<td><input type="hidden" :id="'preview-' + index" :value="file.response.images"></td>
 						</tr>
@@ -163,6 +175,9 @@
                 wapWaysShow: false,
                 pcTypesShow: false,
                 article: {
+                    pctypes: [],
+                    waptypes: [],
+                    wapways: [],
                     cover: [],
                     preview: [],
                     title: '',
@@ -226,6 +241,7 @@
         },
         mounted () {
             this.$nextTick(function () {
+                this.getArticleData(this.$route.params.aid)
                 this.getTags('pc', 'types')
                 this.getTags('wap', 'types')
                 this.getTags('wap', 'ways')
@@ -238,6 +254,36 @@
             quillEditor
         },
         methods: {
+            getArticleData (id) {
+                api.fetchSingleArticle(id).then((response) => {
+                    console.log(response)
+                    if (response.status === 200) {
+                        let articleData = response.data.data
+                        this.article.title = articleData.title
+                        this.article.url = articleData.case_url
+                        this.article.content = articleData.content
+                        this.article.cover = articleData.cover.split(',')
+                        this.article.preview = articleData.preview.split(',')
+
+                        for (var v of articleData.tags) {
+                            var chkName = `${v.platform}${v.category.substring(0, 1).toUpperCase() + v.category.substring(1)}Chk`
+                            switch (chkName) {
+                                case 'wapTypesChk':
+                                    this.wapTypesChk.push(v._id)
+                                    break
+                                case 'wapWaysChk':
+                                    this.wapWaysChk.push(v._id)
+                                    break
+                                case 'pcTypesChk':
+                                    this.pcTypesChk.push(v._id)
+                                    break
+                            }
+                        }
+                    }
+                }).catch((err) => {
+                    console.log(err)
+                })
+            },
             getTags (p, c) {
                 api.fetchTags(p, c).then((response) => {
                     if (response.status === 200) {
@@ -306,53 +352,46 @@
                     preview: p
                 }
 
-                api.createArticle(params).then((response) => {
+                api.updateArticle(this.$route.params.aid, params).then((response) => {
                     if (response.status === 200 && response.data.success) {
                         this.$router.push({path: '/home/articles'})
                     }
                 }).catch((err) => {
                     console.log(err)
                 })
+
+                console.log(params)
+            },
+            deleteImg (type, index) {
+                if (type === 'cover') {
+                    this.article.cover.splice(0, 1)
+                    console.log(this.article.cover)
+                }
+
+                if (type === 'preview') {
+                    this.article.preview.splice(0, 1)
+                    console.log(this.article.preview)
+                }
             }
         }
     }
 </script>
-
 <style>
-	.publish-page-title h3{
-		margin-bottom: 20px;
+	.detail-img-list{ padding: 0; list-style: none}
+	.detail-img-list li{
+		position: relative;
+		display: inline-block;
+		width: 150px;
+		padding: 15px 15px 15px 0;
 	}
-	.kind-group {
-		max-height: 500px;
-		overflow-y: auto;
-		margin: 0 0 10px 0
+	.detail-img-list li .close{
+		position: absolute;
+		right: 0;
+		top: 0;
+		display: none;
 	}
-	.kind-ti {
-		text-indent: 1em
+	.detail-img-list li:hover .close{
+		display: block;
 	}
-	.row .collapse-link {
-		margin-left:5px
-	}
-	.kind-group .radio, .kind-group .checkbox {
-		margin-top:0
-	}
-	.kind-label {
-		margin-top:10px
-	}
-
-	.img-list-table .form-control{ width: 200px;}
-	.img-list-table td{ padding-bottom: 10px;}
-	.img-list-table td span{ padding: 0 5px;}
-	.img-file-wrap{ padding-bottom: 10px;}
-	.img-file-wrap .file-uploads span{ display: block; padding: 5px; background: #1ABB9C; border-radius: 3px; color: #fff; font-size: 12px; cursor: pointer;font-weight: normal;}
-
-	.btn-article{ padding: 5px; background: #1ABB9C; border-radius: 3px; color: #fff; font-size: 12px; cursor: pointer;font-weight: normal; border: none;}
-	.submit-group{ text-align: center}
-	.submit-group .btn-article{ padding: 5px 20px;}
-	.submit-group .btn-article:disabled{background-color: #ccc}
-
-	.form-group .upload-tips{ font-weight: normal; color: #969896; font-size: 12px;}
-
-	.ql-container,
-	.ql-toolbar.ql-snow{ background-color: #fff;}
+	.detail-img-list li img{ width: 100%;}
 </style>

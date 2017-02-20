@@ -29,7 +29,7 @@
 						<td>{{item.title}}</td>
 						<td>{{item.publish_time | moment("YYYY-MM-DD")}}</td>
 						<td>
-							<router-link :to="{ name: 'articles', params: { aid: item._id }}">修改</router-link>
+							<router-link :to="{ name: 'edit', params: { aid: item._id }}">修改</router-link>
 							|
 							<button @click="deleteArticle(item._id)">删除</button>
 						</td>

@@ -21,6 +21,14 @@ export const createArticle = (conditions) => {
     return axios.post(`/articles`, conditions)
 }
 
+export const fetchSingleArticle = (id) => {
+    return axios.get(`/articles/${id}`)
+}
+
+export const updateArticle = (id, conditions) => {
+    return axios.put(`/articles/${id}`, conditions)
+}
+
 export const deleteArticle = (id) => {
     return axios.delete(`/articles/${id}`)
 }
