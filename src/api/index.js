@@ -17,6 +17,10 @@ export const fetchArticles = (conditions) => {
     return axios.get(`/articles`, {params: conditions})
 }
 
+export const createArticle = (conditions) => {
+    return axios.post(`/articles`, conditions)
+}
+
 export const deleteArticle = (id) => {
     return axios.delete(`/articles/${id}`)
 }

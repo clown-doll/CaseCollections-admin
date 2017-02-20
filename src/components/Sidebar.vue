@@ -112,7 +112,7 @@
 	.container.body .col-md-3.left_col {
 		width:230px;
 		padding:0;
-		position:absolute;
+		position:fixed;
 		background-color: #2A3F54;
 	}
 
