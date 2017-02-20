@@ -97,7 +97,6 @@
             },
             deleteArticle (id) {
                 api.deleteArticle(id).then((response) => {
-                    console.log(response)
                     if (response.status === 200) {
                         alert('删除成功')
                         this.getList(this.conditions)

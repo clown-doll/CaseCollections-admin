@@ -256,7 +256,6 @@
         methods: {
             getArticleData (id) {
                 api.fetchSingleArticle(id).then((response) => {
-                    console.log(response)
                     if (response.status === 200) {
                         let articleData = response.data.data
                         this.article.title = articleData.title
@@ -338,7 +337,6 @@
 
                 if (this.previewFiles.length) {
                     for (var i = 0; i < this.previewFiles.length; i++) {
-                        console.log(i)
                         p.push(document.getElementById(`preview-${i}`).value)
                     }
                 }
@@ -359,18 +357,14 @@
                 }).catch((err) => {
                     console.log(err)
                 })
-
-                console.log(params)
             },
             deleteImg (type, index) {
                 if (type === 'cover') {
                     this.article.cover.splice(0, 1)
-                    console.log(this.article.cover)
                 }
 
                 if (type === 'preview') {
                     this.article.preview.splice(0, 1)
-                    console.log(this.article.preview)
                 }
             }
         }

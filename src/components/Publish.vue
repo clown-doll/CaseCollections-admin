@@ -283,6 +283,8 @@
                 }
             },
             saveArticle () {
+                let pf = this.pcTypesChk ? 'pc' : 'wap'
+
                 let c = []
                 if (this.coverFiles.length) {
                     c.push(document.getElementById('cover').value)
@@ -292,7 +294,6 @@
 
                 if (this.previewFiles.length) {
                     for (var i = 0; i < this.previewFiles.length; i++) {
-                        console.log(i)
                         p.push(document.getElementById(`preview-${i}`).value)
                     }
                 }
@@ -303,7 +304,8 @@
                     case_url: this.article.url,
                     tags: this.tags,
                     cover: c,
-                    preview: p
+                    preview: p,
+                    platform: pf
                 }
 
                 api.createArticle(params).then((response) => {
