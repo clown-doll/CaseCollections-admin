@@ -283,7 +283,7 @@
                 }
             },
             saveArticle () {
-                let pf = this.pcTypesChk ? 'pc' : 'wap'
+                let pf = this.pcTypesChk.length > 0 ? 'pc' : 'wap'
 
                 let c = []
                 if (this.coverFiles.length) {
