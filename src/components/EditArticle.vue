@@ -331,6 +331,8 @@
                 let c = []
                 if (this.coverFiles.length) {
                     c.push(document.getElementById('cover').value)
+                } else {
+                    c = this.article.cover
                 }
 
                 let p = []
@@ -339,6 +341,8 @@
                     for (var i = 0; i < this.previewFiles.length; i++) {
                         p.push(document.getElementById(`preview-${i}`).value)
                     }
+                } else {
+                    p = this.article.preview
                 }
 
                 let params = {
